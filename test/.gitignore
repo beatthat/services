@@ -47,6 +47,8 @@ node_modules
 Assets/build
 Assets/packages
 Assets/packages.meta
+Assets/Plugins/BeatThat
+Assets/Plugins/BeatThat.meta
 manifest.json
 manifest.json.meta
 .vscode
