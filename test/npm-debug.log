@@ -65,14 +65,14 @@
 30 info git   'git@github.com:beatthat/services.git',
 30 info git   '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4' ]
 31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: Cloning into bare repository '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4'...
-31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: Host key verification failed.
+31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: ERROR: Repository not found.
 31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: fatal: Could not read from remote repository.
 31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4:
 31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: Please make sure you have the correct access rights
 31 error git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4: and the repository exists.
 32 silly fetchPackageMetaData Error: Command failed: git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4
 32 silly fetchPackageMetaData Cloning into bare repository '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4'...
-32 silly fetchPackageMetaData Host key verification failed.
+32 silly fetchPackageMetaData ERROR: Repository not found.
 32 silly fetchPackageMetaData fatal: Could not read from remote repository.
 32 silly fetchPackageMetaData
 32 silly fetchPackageMetaData Please make sure you have the correct access rights
@@ -88,7 +88,7 @@
 32 silly fetchPackageMetaData     at Pipe._handle.close [as _onclose] (net.js:501:12)
 32 silly fetchPackageMetaData  error for beatthat/services { Error: Command failed: git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4
 32 silly fetchPackageMetaData Cloning into bare repository '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4'...
-32 silly fetchPackageMetaData Host key verification failed.
+32 silly fetchPackageMetaData ERROR: Repository not found.
 32 silly fetchPackageMetaData fatal: Could not read from remote repository.
 32 silly fetchPackageMetaData
 32 silly fetchPackageMetaData Please make sure you have the correct access rights
@@ -112,7 +112,7 @@
 36 silly install printInstalled
 37 verbose stack Error: Command failed: git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4
 37 verbose stack Cloning into bare repository '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4'...
-37 verbose stack Host key verification failed.
+37 verbose stack ERROR: Repository not found.
 37 verbose stack fatal: Could not read from remote repository.
 37 verbose stack
 37 verbose stack Please make sure you have the correct access rights
@@ -134,7 +134,7 @@
 43 error code 128
 44 error Command failed: git clone --template=/Users/larryk/.npm/_git-remotes/_templates --mirror git@github.com:beatthat/services.git /Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4
 44 error Cloning into bare repository '/Users/larryk/.npm/_git-remotes/git-github-com-beatthat-services-git-8a73f3e4'...
-44 error Host key verification failed.
+44 error ERROR: Repository not found.
 44 error fatal: Could not read from remote repository.
 44 error
 44 error Please make sure you have the correct access rights
