@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shadowmint/unity-services.git"
+    "url": "git+https://github.com/beatthat/unity-services.git"
   },
   "files": [
     "index.js",
@@ -15,9 +15,9 @@
   "author": "larrykirschner@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shadowmint/unity-services/issues"
+    "url": "https://github.com/beatthat/unity-services/issues"
   },
-  "homepage": "https://github.com/shadowmint/unity-services",
+  "homepage": "https://github.com/beatthat/unity-services",
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
   },
