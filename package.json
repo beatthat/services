@@ -24,6 +24,6 @@
   "dependencies": {
     "ncp": "^2.0.0",
     "mkdirp": "^0.5.1",
-    "unity-utils": "github:beatthat/unity-utils#0.0.1"
+    "unity-utils": "github:beatthat/unity-utils#^0.0.1"
   }
 }
