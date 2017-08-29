@@ -232,7 +232,7 @@ bluebird@^2.9.33:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
 
-brace-expansion@^1.0.0:
+brace-expansion@^1.0.0, brace-expansion@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
   dependencies:
@@ -912,7 +912,7 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
 
-isobject@^2.0.0, isobject@^2.1.0:
+isobject@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"
   dependencies:
@@ -1107,7 +1107,13 @@ micromatch@^2.3.7:
     parse-glob "^3.0.4"
     regex-cache "^0.4.2"
 
-"minimatch@2 || 3", minimatch@^2.0.1, minimatch@^2.0.3:
+"minimatch@2 || 3":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
+  dependencies:
+    brace-expansion "^1.1.7"
+
+minimatch@^2.0.1, minimatch@^2.0.3:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-2.0.10.tgz#8d087c39c6b38c001b97fca7ce6d0e1e80afbac7"
   dependencies:
@@ -1187,12 +1193,18 @@ object.omit@^2.0.0:
     is-extendable "^0.1.1"
 
 object.pick@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/object.pick/-/object.pick-1.2.0.tgz#b5392bee9782da6d9fb7d6afaf539779f1234c2b"
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/object.pick/-/object.pick-1.3.0.tgz#87a10ac4c1694bd2e1cbf53591a66141fb5dd747"
   dependencies:
-    isobject "^2.1.0"
+    isobject "^3.0.1"
 
-once@^1.3.0, once@~1.3.0:
+once@^1.3.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
+  dependencies:
+    wrappy "1"
+
+once@~1.3.0:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/once/-/once-1.3.3.tgz#b2e261557ce4c314ec8304f3fa82663e4297ca20"
   dependencies:
@@ -1508,8 +1520,8 @@ source-map@0.1.32:
     amdefine ">=0.0.4"
 
 source-map@^0.5.0, source-map@~0.5.0:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
 sparkles@^1.0.0:
   version "1.0.0"
@@ -1622,17 +1634,25 @@ unique-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unique-stream/-/unique-stream-1.0.0.tgz#d59a4a75427447d9aa6c91e70263f8d26a4b104b"
 
-unity-services@beatthat/unity-services:
-  version "0.0.1"
-  resolved "https://codeload.github.com/beatthat/unity-services/tar.gz/440fb04575259b5d6f327e6d4c0fd543038b7139"
+"unity-pools@github:beatthat/unity-pools#^0.0.5":
+  version "0.0.5"
+  resolved "https://codeload.github.com/beatthat/unity-pools/tar.gz/1eefd77a6e3c90a7ef9c2924c9b3854f8f540428"
   dependencies:
     mkdirp "^0.5.1"
     ncp "^2.0.0"
-    unity-utils "github:beatthat/unity-utils#0.0.1"
 
-"unity-utils@github:beatthat/unity-utils#0.0.1":
-  version "0.0.1"
-  resolved "https://codeload.github.com/beatthat/unity-utils/tar.gz/c267bbc918485c1724296bb5e00b3b1ce168b6aa"
+unity-services@../unity-services-0.0.2.tgz:
+  version "0.0.2"
+  resolved "../unity-services-0.0.2.tgz#27841df24b50cdc8a2bf36f770b6f41740025ce5"
+  dependencies:
+    mkdirp "^0.5.1"
+    ncp "^2.0.0"
+    unity-pools "github:beatthat/unity-pools#^0.0.5"
+    unity-utils "github:beatthat/unity-utils#^0.0.4"
+
+"unity-utils@github:beatthat/unity-utils#^0.0.4":
+  version "0.0.4"
+  resolved "https://codeload.github.com/beatthat/unity-utils/tar.gz/0d5ee9d219d4567bfb8b98f5038a7f41ad1249bd"
   dependencies:
     mkdirp "^0.5.1"
     ncp "^2.0.0"
@@ -1706,8 +1726,8 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
 xml2js@^0.4.15:
-  version "0.4.18"
-  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.18.tgz#a117ec8153aeeb22f9541bfbe8805e35dae7b969"
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.19.tgz#686c20f213209e94abf0d1bcf1efaa291c7827a7"
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~9.0.1"

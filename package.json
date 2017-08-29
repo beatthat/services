@@ -1,6 +1,6 @@
 {
   "name": "unity-services",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "services",
   "main": "index.js",
   "repository": {
@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/beatthat/unity-services",
   "scripts": {
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "install:test": "rm -f *.tgz && yarn cache clean && npm pack && cd test && npm run clean && yarn install"
   },
   "dependencies": {
     "ncp": "^2.0.0",
     "mkdirp": "^0.5.1",
-    "unity-utils": "github:beatthat/unity-utils#^0.0.1"
+    "unity-utils": "github:beatthat/unity-utils#^0.0.4",
+    "unity-pools": "github:beatthat/unity-pools#^0.0.5"
   }
 }
