@@ -1,11 +1,12 @@
 {
-  "name": "unity-services",
-  "version": "0.0.4",
-  "description": "services",
+  "name": "services",
+  "scope": "ape",
+  "version": "0.0.5",
+  "description": "enables you to find global services, e.g. Services.Require<MyServiceInterface>()",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beatthat/unity-services.git"
+    "url": "git+https://github.com/beatthat/services.git"
   },
   "files": [
     "index.js",
@@ -15,17 +16,22 @@
   "author": "larrykirschner@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/beatthat/unity-services/issues"
+    "url": "https://github.com/beatthat/services/issues"
   },
-  "homepage": "https://github.com/beatthat/unity-services",
+  "homepage": "https://github.com/beatthat/services",
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
-    "install:test": "rm -f *.tgz npm cache clear && npm pack && cd test && npm run clean && npm install --force"
+    "install:test": "rm -f *.tgz && npm pack && cd test && npm run clean && npm install",
+    "clean": "rm -f *.tgz && cd test && npm run clean",
+    "sync:test2src": "rsync -rv --include '*/' --include '*.cs' --exclude '*' --prune-empty-dirs test/Assets/Plugins/${npm_package_scope}/${npm_package_name}/ ./src/${npm_package_name}/",
+    "pub:tag": "git add -A && git commit -m ${npm_package_version} && git tag -a ${npm_package_version} -m ${npm_package_version} && git push origin master && git push origin ${npm_package_version}"
   },
   "dependencies": {
     "ncp": "^2.0.0",
     "mkdirp": "^0.5.1",
-    "unity-utils": "beatthat/unity-utils#semver:^0.0.4",
-    "unity-pools": "beatthat/unity-pools#semver:^0.0.5"
+    "comments": "beatthat/comments#semver:^0.0.1",
+    "pools": "beatthat/pools#semver:^0.0.7",
+    "safe-refs": "beatthat/safe-refs#semver:^0.0.1"
+
   }
 }

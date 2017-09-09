@@ -5,6 +5,27 @@ using System;
 
 namespace BeatThat.Service
 {
+
+	/// <summary>
+	/// Enables you to find global services, e.g. Services.Require<MyServiceInterface>().
+	///
+	/// Services can be registered explicitly but often the most convenient way is via attribute, e.g.
+	///
+	/// <c>
+	///
+	/// public interface MyApi {}
+	///
+	/// [RegisterService(typeof(MyApi)]
+	/// public class MyApiImpl : MonoBehaviour, MyApi {}
+	///
+	/// ///somewhere
+	/// Services.Init(() => {
+	/// 	Services.Require<MyApi>(); // returns singleton MyApiImpl
+	/// });
+	///
+	///
+	/// </c>
+	/// </summary>
 	public class Services : MonoBehaviour
 	{
 		private static bool SELF_LOAD_ON_AWAKE = true;
@@ -14,7 +35,7 @@ namespace BeatThat.Service
 			SELF_LOAD_ON_AWAKE = false;
 		}
 
-		public static Services Get 
+		public static Services Get
 		{
 			get {
 				if(INSTANCE == null && (INSTANCE = UnityEngine.Object.FindObjectOfType<Services>()) == null) {
@@ -27,11 +48,11 @@ namespace BeatThat.Service
 		/// <summary>
 		/// Default init op. Handy especially for integration tests
 		/// </summary>
-		/// 
-		/// <param name="callback">(optional) callback invoked when all services have completed init 
+		///
+		/// <param name="callback">(optional) callback invoked when all services have completed init
 		/// 	(services that implement AsyncInitService may not init immediately)
 		/// </param>
-		public static void Init(Action callback = null) 
+		public static void Init(Action callback = null)
 		{
 			ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
 		}
@@ -87,7 +108,7 @@ namespace BeatThat.Service
 
 				m_contextsByName[ctx] = ctxObj;
 
-				Debug.Log("[" + Time.time + "] " + GetType() 
+				Debug.Log("[" + Time.time + "] " + GetType()
 				          + "::SetLocatorContext creating new context '" + ctx + "'");
 			}
 
@@ -99,7 +120,7 @@ namespace BeatThat.Service
 		{
 			get; private set;
 		}
-		
+
 		public static bool isEnabled
 		{
 			get {
@@ -113,8 +134,8 @@ namespace BeatThat.Service
 				return INSTANCE != null;
 			}
 		}
-		
-		void Awake() 
+
+		void Awake()
 		{
 			SetActiveContext(this.activeContext);
 			DontDestroyOnLoad(this.gameObject);
@@ -124,20 +145,20 @@ namespace BeatThat.Service
 				loader.LoadServices(true, () => Destroy (loader.gameObject));
 			}
 		}
-		
+
 		public T AddPersistentComponent<T>(string name) where T : Component
 		{
 			var go = new GameObject(name);
 			go.transform.parent = this.transform;
 			return go.AddComponent<T>();
 		}
-		
+
 		public void RegisterService<RegistrationInterface>(ServiceRegistration serviceRegistration)
 			where RegistrationInterface : class
 		{
 			RegisterService(serviceRegistration, typeof(RegistrationInterface));
 		}
-		
+
 		public void RegisterService(ServiceRegistration serviceRegistration, Type registrationInterface)
 		{
 			// force the creation of the registered service and also make sure it's not null
@@ -146,7 +167,7 @@ namespace BeatThat.Service
 				throw new NullReferenceException("ServiceRegistration returns null for type "
 					+ registrationInterface.Name + ", registration=" + serviceRegistration);
 			}
-			
+
 			var component = service as Component;
 			if(component != null) {
 				component.transform.parent = this.transform;
@@ -154,13 +175,13 @@ namespace BeatThat.Service
 
 			GetActiveContext().Set(registrationInterface, serviceRegistration);
 		}
-		
+
 		public bool UnregisterService<RegistrationInterface>()
 			where RegistrationInterface : class
 		{
 			return UnregisterService(typeof(RegistrationInterface));
 		}
-		
+
 		public bool UnregisterService(Type registrationInterface)
 		{
 			object service = GetService(registrationInterface);
@@ -170,7 +191,7 @@ namespace BeatThat.Service
 
 			return GetActiveContext().Remove(registrationInterface);
 		}
-		
+
 		public ServiceType GetService<ServiceType>() where ServiceType : class
 		{
 			Type t = typeof(ServiceType);
@@ -183,7 +204,7 @@ namespace BeatThat.Service
 				return null;
 			}
 		}
-		
+
 		public object GetService(Type registrationInterface)
 		{
 			ServiceRegistration registration = null;
@@ -245,7 +266,7 @@ namespace BeatThat.Service
 		}
 
 		private static Services INSTANCE;
-		
+
 		private Dictionary<string, Context> m_contextsByName = new Dictionary<string, Context>();
 		private const string DEFAULT_CONTEXT_NAME = "";
 	}
