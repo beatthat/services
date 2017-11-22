@@ -33,6 +33,5 @@
         "comments": "beatthat/comments#semver:^0.0.2",
         "pools": "beatthat/pools#semver:^0.0.8",
         "safe-refs": "beatthat/safe-refs#semver:^0.0.2"
-
     }
 }
