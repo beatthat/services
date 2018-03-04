@@ -7,7 +7,7 @@ namespace BeatThat.Service
 {
 
 	/// <summary>
-	/// <c>Services</c> provides access to global services by interface, e.g. Services.Require<MyServiceInterface>().
+	/// Enables you to find global services, e.g. Services.Require<MyServiceInterface>().
 	///
 	/// Services can be registered explicitly but often the most convenient way is via attribute, e.g.
 	///
@@ -15,8 +15,7 @@ namespace BeatThat.Service
 	///
 	/// public interface MyApi {}
 	///
-	/// /// attribute tells service system to create an instance of MyApiImpl and register it as MyApi
-	/// [RegisterService(typeof(MyApi)] 
+	/// [RegisterService(typeof(MyApi)]
 	/// public class MyApiImpl : MonoBehaviour, MyApi {}
 	///
 	/// ///somewhere
