@@ -1,7 +1,7 @@
 {
   "name": "services",
   "scope": "ape",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "enables you to find global services, e.g. Services.Require<MyServiceInterface>()",
   "main": "index.js",
   "repository": {
