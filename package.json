@@ -1,8 +1,8 @@
 {
   "name": "services",
-  "scope": "ape",
+  "scope": "beatthat",
   "version": "1.0.0",
-  "description": "enables you to find global services, e.g. Services.Require<MyServiceInterface>()",
+  "description": "enables you to inject or find global services",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -11,7 +11,9 @@
   "files": [
     "index.js",
     "scripts",
-    "src"
+    "src",
+    "Runtime",
+    "Samples"
   ],
   "author": "larrykirschner@gmail.com",
   "license": "MIT",
@@ -32,11 +34,12 @@
     "postversion": "git push && git push --tags && npm run clean"
   },
   "dependencies": {
-    "path": "^0.12.7",
-    "unity-npm-utils": "github:beatthat/unity-npm-utils#semver:^1.0.0",
     "comments": "beatthat/comments#semver:^1.0.0",
+    "path": "^0.12.7",
     "pools": "beatthat/pools#semver:^1.0.0",
-    "safe-refs": "beatthat/safe-refs#semver:^1.0.0"
+    "safe-refs": "beatthat/safe-refs#semver:^1.0.0",
+    "type-utils": "github:beatthat/type-utils#semver:^1.0.0",
+    "unity-npm-utils": "github:beatthat/unity-npm-utils#semver:^1.0.0"
   },
   "devDependencies": {}
 }
