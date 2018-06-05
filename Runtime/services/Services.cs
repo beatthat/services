@@ -123,7 +123,31 @@ namespace BeatThat.Service
 		/// </param>
 		public static void Init(Action callback = null)
 		{
-			ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
+            if (!Services.exists)
+            {
+                ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
+                return;
+            }
+
+            if (Services.Get.hasInit) {
+                if (callback != null)
+                {
+                    callback();
+                }
+                return;
+            }
+
+            if(Services.Get.isInitInProgress) {
+                if(callback == null) {
+                    return;
+                }
+
+                Services.InitStatusUpdated.AddListener(s => { callback(); });
+                return;
+            }
+
+            ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
+			
 		}
 
 		/// <summary>

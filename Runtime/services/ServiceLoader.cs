@@ -31,8 +31,21 @@ namespace BeatThat.Service
 
 		public static string RESOURCE_PATH = "Service/Services";
 
+        public bool disposeAfterLoad { get { return m_disposeAfterLoad; } set { m_disposeAfterLoad = value; } }
 
-		public bool disposeAfterLoad { get { return m_disposeAfterLoad; } set { m_disposeAfterLoad = value; } }
+
+#if UNITY_EDITOR
+        void Reset()
+        {
+            if (Application.isPlaying)
+            {
+                return;
+            }
+
+            m_autoLoadOnAwake = true; // default setting for component added at edit time but NOT added at runtime
+            m_dieIfServicesExists = true;
+        }
+#endif
 
 		#region IDisposable implementation
 
