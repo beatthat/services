@@ -1,7 +1,7 @@
 #pragma warning disable 618
 namespace BeatThat.Service
 {
-	public interface ServiceRegistration  
+    public interface ServiceRegistration  
 	{
 		int registrationGroup { get; }
 		
@@ -20,3 +20,4 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+

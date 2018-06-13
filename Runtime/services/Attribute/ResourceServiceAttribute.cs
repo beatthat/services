@@ -27,3 +27,4 @@ namespace BeatThat.Service
         public string overrideResourcePath { get; private set; }
 	}
 }
+

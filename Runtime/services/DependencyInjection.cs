@@ -1,3 +1,5 @@
+using BeatThat.SafeRefs;
+using BeatThat.Pools;
 #pragma warning disable 618
 
 using System;
@@ -8,7 +10,7 @@ using UnityEngine;
 
 namespace BeatThat.Service
 {
-	public static class DependencyInjection 
+    public static class DependencyInjection 
 	{
 		public static void InjectDependencies(object instance)
 		{
@@ -152,3 +154,6 @@ namespace BeatThat.Service
 
 }
 #pragma warning restore 618
+
+
+

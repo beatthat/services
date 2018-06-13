@@ -1,13 +1,13 @@
 #pragma warning disable 618
-using UnityEngine;
 using System;
 using System.Reflection;
+using UnityEngine;
 namespace BeatThat.Service
 {
-	/// <summary>
-	/// registers a service to the Services by instantiating the given concrete type
-	/// </summary>
-	public class FactoryServiceRegistration : ServiceRegistration
+    /// <summary>
+    /// registers a service to the Services by instantiating the given concrete type
+    /// </summary>
+    public class FactoryServiceRegistration : ServiceRegistration
 	{
 		public FactoryServiceRegistration(Type registrationInterface, Type concreteType)
 		{
@@ -113,3 +113,4 @@ namespace BeatThat.Service
 
 }
 #pragma warning restore 618
+

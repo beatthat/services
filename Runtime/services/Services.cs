@@ -1,33 +1,33 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace BeatThat.Service
 {
 
-	/// <summary>
-	/// <c>Services</c> provides access to global services by interface, e.g. Services.Require<MyServiceInterface>().
-	///
-	/// Services can be registered explicitly but often the most convenient way is via attribute, e.g.
-	///
-	/// <c>
-	///
-	/// public interface MyApi {}
-	///
-	/// /// attribute tells service system to create an instance of MyApiImpl and register it as MyApi
-	/// [RegisterService(typeof(MyApi)] 
-	/// public class MyApiImpl : MonoBehaviour, MyApi {}
-	///
-	/// ///somewhere
-	/// Services.Init(() => {
-	/// 	Services.Require<MyApi>(); // returns singleton MyApiImpl
-	/// });
-	///
-	///
-	/// </c>
-	/// </summary>
-	public class Services : MonoBehaviour
+    /// <summary>
+    /// <c>Services</c> provides access to global services by interface, e.g. Services.Require<MyServiceInterface>().
+    ///
+    /// Services can be registered explicitly but often the most convenient way is via attribute, e.g.
+    ///
+    /// <c>
+    ///
+    /// public interface MyApi {}
+    ///
+    /// /// attribute tells service system to create an instance of MyApiImpl and register it as MyApi
+    /// [RegisterService(typeof(MyApi)] 
+    /// public class MyApiImpl : MonoBehaviour, MyApi {}
+    ///
+    /// ///somewhere
+    /// Services.Init(() => {
+    /// 	Services.Require<MyApi>(); // returns singleton MyApiImpl
+    /// });
+    ///
+    ///
+    /// </c>
+    /// </summary>
+    public class Services : MonoBehaviour
 	{
 		private static bool SELF_LOAD_ON_AWAKE = true;
 
@@ -375,3 +375,4 @@ namespace BeatThat.Service
 		private const string DEFAULT_CONTEXT_NAME = "";
 	}
 }
+

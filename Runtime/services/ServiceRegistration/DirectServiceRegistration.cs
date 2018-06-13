@@ -3,10 +3,10 @@ using System;
 
 namespace BeatThat.Service
 {
-	/// <summary>
-	/// registers a service to a provided implementation
-	/// </summary>
-	public class DirectServiceRegistration : ServiceRegistration
+    /// <summary>
+    /// registers a service to a provided implementation
+    /// </summary>
+    public class DirectServiceRegistration : ServiceRegistration
 	{
 		public DirectServiceRegistration(object service, Type registrationInterface)
 		{
@@ -67,3 +67,4 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+

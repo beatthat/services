@@ -1,13 +1,15 @@
 #pragma warning disable 618
-using UnityEngine;
 using System;
 using System.Reflection;
+using BeatThat.Comments;
+using UnityEngine;
+
 namespace BeatThat.Service
 {
-	/// <summary>
-	/// registers a service to the Services by instantiating a GameObject asset loaded from Resources
-	/// </summary>
-	public class ResourceServiceRegistration : ServiceRegistration
+    /// <summary>
+    /// registers a service to the Services by instantiating a GameObject asset loaded from Resources
+    /// </summary>
+    public class ResourceServiceRegistration : ServiceRegistration
 	{
 		public ResourceServiceRegistration(Type registrationInterface, Type concreteType, ServiceResourceType resourceType = ServiceResourceType.REQUIRED, string overrideResourcePath = null)
 		{
@@ -132,3 +134,4 @@ namespace BeatThat.Service
 
 }
 #pragma warning restore 618
+

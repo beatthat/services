@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace BeatThat.Service
 {
-	/// <summary>
-	/// A component that enables a unity/monobehaviour-based service component
-	/// to register with the servicelocator using a registration interface rather than the services concrete type, 
-	/// e.g. IOSPurchaseService might want to register using the PurchaseService interface.
-	/// 
-	/// This is only for services that need to be configure on the unity scene 
-	/// (say, so that they can have properties configured in the unity editor).
-	/// For Monobehaviour services that DO NOT need unity-editor configuration, use FactoryServiceRegistration instead.
-	/// </summary>
-	public class SiblingServiceRegistration<RegistrationInterface> : MonoBehaviour, ServiceRegistration 
+    /// <summary>
+    /// A component that enables a unity/monobehaviour-based service component
+    /// to register with the servicelocator using a registration interface rather than the services concrete type, 
+    /// e.g. IOSPurchaseService might want to register using the PurchaseService interface.
+    /// 
+    /// This is only for services that need to be configure on the unity scene 
+    /// (say, so that they can have properties configured in the unity editor).
+    /// For Monobehaviour services that DO NOT need unity-editor configuration, use FactoryServiceRegistration instead.
+    /// </summary>
+    public class SiblingServiceRegistration<RegistrationInterface> : MonoBehaviour, ServiceRegistration 
 		where RegistrationInterface : class
 	{
 
@@ -75,3 +75,4 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+

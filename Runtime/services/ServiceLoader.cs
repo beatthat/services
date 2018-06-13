@@ -1,25 +1,28 @@
+using BeatThat.Pools;
 #pragma warning disable 618
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using BeatThat.Comments;
+
 namespace BeatThat.Service
 {
-	/// <summary>
-	/// Loads a games services to the Services.
-	/// 
-	/// Generally, each game should subclass ServiceLoader and override DoSetFactoryServiceRegistrations
-	/// to install most services.
-	/// 
-	/// For services that need to be configure in the Unity scene, 
-	/// any gameobject that is a direct child of the ServiceLoader *and* 
-	/// has exactly one (non-transform) component, will be auto registered
-	/// using the concrete type of that component as the registration interface.
-	/// 
-	/// Alternatively if you have a unity-configured service component
-	/// but you want to use a registration interface that is NOT
-	/// the component's concrete type, create a custom GenericMBServiceRegistration subclass for that component.
-	/// </summary>
-	public class ServiceLoader : MonoBehaviour, IDisposable
+    /// <summary>
+    /// Loads a games services to the Services.
+    /// 
+    /// Generally, each game should subclass ServiceLoader and override DoSetFactoryServiceRegistrations
+    /// to install most services.
+    /// 
+    /// For services that need to be configure in the Unity scene, 
+    /// any gameobject that is a direct child of the ServiceLoader *and* 
+    /// has exactly one (non-transform) component, will be auto registered
+    /// using the concrete type of that component as the registration interface.
+    /// 
+    /// Alternatively if you have a unity-configured service component
+    /// but you want to use a registration interface that is NOT
+    /// the component's concrete type, create a custom GenericMBServiceRegistration subclass for that component.
+    /// </summary>
+    public class ServiceLoader : MonoBehaviour, IDisposable
 	{
 		public bool m_disposeAfterLoad = true;
 
@@ -470,3 +473,5 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+
+

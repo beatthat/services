@@ -1,9 +1,8 @@
 #pragma warning disable 618
 using UnityEngine;
-using BeatThat.Service;
 namespace BeatThat.Service
 {
-	public abstract class MBServiceRegistration : MonoBehaviour, ServiceRegistration
+    public abstract class MBServiceRegistration : MonoBehaviour, ServiceRegistration
 	{ 
 		public int registrationGroup
 		{
@@ -40,3 +39,4 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+

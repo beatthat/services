@@ -1,10 +1,11 @@
+using BeatThat.SafeRefs;
 #pragma warning disable 618
 using UnityEngine;
 using System;
 
 namespace BeatThat.Service
 {
-	public class ComponentServiceRegistration : ServiceRegistration
+    public class ComponentServiceRegistration : ServiceRegistration
 	{ 
 		public ComponentServiceRegistration(Component service) : this(service, service.GetType()) {}
 
@@ -71,4 +72,6 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+
+
 

@@ -5,7 +5,7 @@ using BeatThat.TypeExts;
 
 namespace BeatThat.Service
 {
-	public static class AutowiredServiceRegistrations 
+    public static class AutowiredServiceRegistrations 
 	{
 		public static void GetWirings(ICollection<ServiceRegistrationInfo> wirings)
 		{
@@ -144,3 +144,5 @@ namespace BeatThat.Service
 	}
 
 }
+
+

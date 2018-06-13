@@ -3,7 +3,7 @@ using System;
 
 namespace BeatThat.Service
 {
-	public class ProxyServiceRegistration : ServiceRegistration
+    public class ProxyServiceRegistration : ServiceRegistration
 	{
 		public ProxyServiceRegistration(Type registrationInterface, Type concreteType)
 		{
@@ -59,3 +59,4 @@ namespace BeatThat.Service
 	}
 }
 #pragma warning restore 618
+

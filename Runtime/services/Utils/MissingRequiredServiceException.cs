@@ -2,7 +2,7 @@ using System;
 
 namespace BeatThat.Service
 {
-	public class MissingRequiredServiceException : System.Exception 
+    public class MissingRequiredServiceException : System.Exception 
 	{
 		public MissingRequiredServiceException(Type type) : base("No service regisration for required type '" + type.Name + "'")
 		{
@@ -12,3 +12,4 @@ namespace BeatThat.Service
 		public Type type { get; private set; }
 	}
 }
+
