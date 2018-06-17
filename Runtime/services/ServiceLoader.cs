@@ -281,7 +281,7 @@ namespace BeatThat.Service
 				using(var proxies = ListPool<Type>.Get()) {
 					foreach(var w in wirings) {
 						Register(w.interfaceType, w.implType, w.resourceType, w.overrideResourcePath);
-						if(!AutowiredServiceRegistrations.GetProxyInterfaces(w.interfaceType, proxies)) {
+                        if(!AutowiredServiceRegistrations.GetProxyInterfaces(w.implType, w.interfaceType, proxies)) {
 							continue;
 						}
 

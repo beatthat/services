@@ -9,13 +9,15 @@ namespace BeatThat.Service.Examples
         void Increment();
     }
 
-    [RegisterService(typeof(ICounter))]
+    [RegisterService]
     public class Counter 
         : MonoBehaviour // Services are not required to be monobehaviours 
                         // but it's convenient to be able to see them in the unity editor
    
         , ICounter      // It's good practice to have narrow interface(s) 
-                        // for services and access them via interface
+                        // for services and access them via interface.
+                        // By default, [RegisterService] will create a proxy registration
+                        // for every interface declared directly on the class where you appy the attribute.
     {
         public int count
         {

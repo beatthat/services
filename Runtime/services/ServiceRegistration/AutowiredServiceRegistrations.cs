@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using BeatThat.TypeExts;
 
@@ -28,7 +29,7 @@ namespace BeatThat.Service
 		/// <returns><c>true</c>, if the registration interface exists and has proxy interfaces, <c>false</c> otherwise.</returns>
 		/// <param name="registrationInterface">the registration interface.</param>
 		/// <param name="proxyInterfaces">Any proxy interfaces found are added to this result list</param>
-		public static bool GetProxyInterfaces(Type registrationInterface, List<Type> proxyInterfaces)
+        public static bool GetProxyInterfaces(Type serviceType, Type registrationInterface, List<Type> proxyInterfaces)
 		{
 			AttributesAndImplementationType[] wirings;
 			if(!m_wiringsByInterface.TryGetValue(registrationInterface, out wirings)) {
@@ -40,13 +41,41 @@ namespace BeatThat.Service
 			}
 
 			var attr = wirings[0].registerServiceAttr;
-			if(attr.proxyInterfaces == null || attr.proxyInterfaces.Length == 0) {
-				return false;
+			if(attr.proxyInterfaces != null && attr.proxyInterfaces.Length > 0) {
+                proxyInterfaces.AddRange(attr.proxyInterfaces);
 			}
 
-			proxyInterfaces.AddRange(attr.proxyInterfaces);
-			return true;
+            switch (attr.interfaceRegistrationPolicy)
+            {
+                case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnType:
+                    GetInterfaces(serviceType, false, proxyInterfaces);
+                    break;
+                case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeAndParents:
+                    GetInterfaces(serviceType, true, proxyInterfaces);
+                    break;
+                case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces:
+                    if (proxyInterfaces.Count == 0)
+                    {
+                        GetInterfaces(serviceType, false, proxyInterfaces);
+                    }
+                    break;
+            }
+
+            return proxyInterfaces.Count > 0;
 		}
+
+        private static void GetInterfaces(this Type type, bool includeInherited, List<Type> interfaces)
+        {
+            if (includeInherited || type.BaseType == null)
+            {
+                interfaces.AddRange(type.GetInterfaces());
+            }
+            else
+            {
+                interfaces.AddRange(type.GetInterfaces().Except(type.BaseType.GetInterfaces()));
+            }
+        }
+
 
 		public static bool TryGetImplForInterface(Type intf, out Type impl)
 		{

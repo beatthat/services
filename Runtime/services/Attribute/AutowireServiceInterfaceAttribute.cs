@@ -15,7 +15,8 @@ namespace BeatThat.Service
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
 	public class AutowireServiceInterfaceAttribute : RegisterServiceAttribute 
 	{
-		public AutowireServiceInterfaceAttribute(Type serviceInterface, Type[] proxyInterfaces = null, int priority = 0) : base(serviceInterface, proxyInterfaces, priority) {}
+		public AutowireServiceInterfaceAttribute(Type serviceInterface, Type[] proxyInterfaces = null, int priority = 0) 
+            : base(serviceInterface, InterfaceRegistrationPolicy.RegisterInterfacesSpecifiedAsProxy, proxyInterfaces, priority) {}
 	}
 }
 

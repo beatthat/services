@@ -1,4 +1,5 @@
 using System;
+using BeatThat.Pools;
 
 namespace BeatThat.Service
 {
@@ -25,12 +26,58 @@ namespace BeatThat.Service
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
 	public class RegisterServiceAttribute : ServiceInterfaceAttribute 
 	{
-		public RegisterServiceAttribute(Type serviceInterface = null, Type[] proxyInterfaces = null, int priority = 0) : base(serviceInterface, priority) 
+		public RegisterServiceAttribute(
+			Type serviceInterface = null, 
+            InterfaceRegistrationPolicy interfaceRegistrationPolicy 
+                = InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces,
+			Type[] proxyInterfaces = null, 
+			int priority = 0) 
+			: base(serviceInterface, priority) 
 		{
 			this.proxyInterfaces = proxyInterfaces;
+            this.interfaceRegistrationPolicy = interfaceRegistrationPolicy;
+
 		}
 
-		public Type[] proxyInterfaces { get; private set; }
+        public Type[] proxyInterfaces { get; private set; }
+        public InterfaceRegistrationPolicy interfaceRegistrationPolicy { get; private set; }
 	}
+
+    /// <summary>
+    /// Policy on which interfaces to register as proxies for the service.
+    /// Any proxy interface can be used to location or inject the service.
+    /// 
+    /// Examples:
+    /// <code>
+    /// public interface HasFoo
+    /// {
+    ///     void Foo();
+    /// }
+    /// 
+    /// public interface HasBar
+    /// {
+    ///     void Bar();
+    /// }
+    /// 
+    /// public class ParentService : HasFoo
+    /// {
+    ///     public void Foo();
+    /// }
+    /// 
+    /// public class MyService : HasBar
+    /// {
+    ///     public void Bar();
+    /// }
+    /// 
+    /// [RegisterService]
+    /// </code>
+    /// </summary>
+    public enum InterfaceRegistrationPolicy
+    {
+        RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces = 0,
+        RegisterInterfacesDeclaredOnType = 1,
+		RegisterInterfacesDeclaredOnTypeAndParents = 2,
+		RegisterInterfacesSpecifiedAsProxy = 3
+    }
 }
 
