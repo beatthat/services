@@ -4,23 +4,24 @@ using UnityEngine.UI;
 namespace BeatThat.Service.Example_DepenendencyInjection
 {
     [RequireComponent(typeof(Text))]
-    public class CounterDisplay : DependencyInjectedBehaviour
+    public class CounterDisplay : MonoBehaviour
     {
         public Text m_text;
 
-        /**
-         * Dependency injection tries to locate and set properties marked with the [Inject] attribute
-         */
-        [Inject] ICounter counter;
+        // Add the [Inject] attribute to properties 
+        // to have them set with the service registered to the property's type
+        [Inject] CounterService counter;
 
-        /**
-         * Base class DependencyInjectedBehaviour implements DependencyInjectionEventHandler,
-         * and so, we get a callback when dependency injection is complete
-         */ 
-        override public void OnDidInjectDependencies()
+        private void Start()
         {
-            m_text = GetComponent<Text>();
             
+            //Something needs to call DependencyInjection.InjectDependencies.
+            //
+            //One option is to call it in MonoBehaviour::Start...
+            DependencyInjection.InjectDependencies(this);
+
+            m_text = GetComponent<Text>();
+
             // since dependency injection is complete, the counter property should be set now
             this.counter.onUpdated.AddListener(this.UpdateDisplay);
             UpdateDisplay();
