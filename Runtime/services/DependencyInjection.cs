@@ -1,10 +1,8 @@
-using BeatThat.SafeRefs;
-using BeatThat.Pools;
-#pragma warning disable 618
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using BeatThat.Pools;
+using BeatThat.SafeRefs;
 using BeatThat.TypeExt;
 using UnityEngine;
 
@@ -18,6 +16,9 @@ namespace BeatThat.Service
 	
 			var typeInjections = GetTypeInjectionFields (instType);
 
+            var eventHandler = instance as DependencyInjectionEventHandler;
+            var willInjectEventSent = false;
+
 			if (typeInjections.fields != null && typeInjections.fields.Length > 0) {
 				foreach (var f in typeInjections.fields) {
 					if (f.GetValue (instance) != null) { // don't overwrite if already set
@@ -28,6 +29,11 @@ namespace BeatThat.Service
 						InjectOnServicesInit (instance);
 						return;
 					}
+
+                    if(eventHandler != null && !willInjectEventSent) {
+                        eventHandler.OnWillInjectDependencies();
+                        willInjectEventSent = true;
+                    }
 
 					var v = Services.Get.GetService (f.FieldType);
 					if (v == null) {
@@ -53,6 +59,12 @@ namespace BeatThat.Service
 						return;
 					}
 
+                    if (eventHandler != null && !willInjectEventSent)
+                    {
+                        eventHandler.OnWillInjectDependencies();
+                        willInjectEventSent = true;
+                    }
+
 					var v = Services.Get.GetService (p.PropertyType);
 					if (v == null) {
 						#if UNITY_EDITOR || DEBUG_UNSTRIP
@@ -66,6 +78,10 @@ namespace BeatThat.Service
 					p.SetValue (instance, v, null);
 				}
 			}
+
+            if(eventHandler != null) {
+                eventHandler.OnDidInjectDependencies();
+            }
 		}
 
 		private static TypeInjections GetTypeInjectionFields(Type t)
@@ -125,6 +141,11 @@ namespace BeatThat.Service
 
 		private static void InjectOnServicesInit(object inst)
 		{
+            var eventHandler = inst as DependencyInjectionEventHandler;
+            if(eventHandler != null) {
+                eventHandler.OnDependencyInjectionWaitingForServicesReady();
+            }
+
 			if (m_injectOnServicesInit == null) {
 				m_injectOnServicesInit = ListPool<SafeRef<object>>.Get ();
 
@@ -153,7 +174,6 @@ namespace BeatThat.Service
 	}
 
 }
-#pragma warning restore 618
 
 
 

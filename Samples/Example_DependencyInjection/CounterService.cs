@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
-namespace BeatThat.Service.Examples
+namespace BeatThat.Service.Example_DepenendencyInjection
 {
     public interface ICounter
     { 
+        UnityEvent onUpdated { get; }
+
         int count { get; }
 
         void Increment();
@@ -19,15 +22,18 @@ namespace BeatThat.Service.Examples
                         // By default, [RegisterService] will create a proxy registration
                         // for every interface declared directly on the class where you appy the attribute.
     {
+        public UnityEvent onUpdated { get { return m_onUpdated ?? (m_onUpdated = new UnityEvent()); } }
+        private UnityEvent m_onUpdated;
+
         public int count
         {
-            get; set;
+            get; private set;
         }
 
         public void Increment()
         {
             this.count++;
-            Debug.Log("incremented count to " + this.count);
+            this.onUpdated.Invoke();
         }
     }
 }
