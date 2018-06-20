@@ -1,5 +1,4 @@
 using System;
-using BeatThat.Pools;
 
 namespace BeatThat.Service
 {

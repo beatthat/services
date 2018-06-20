@@ -13,7 +13,10 @@ namespace BeatThat.Service
 			EnsureWiringsLoaded();
 
 			foreach(var e in m_wiringsByInterface) {
-				wirings.Add(
+                var regInterface = e.Key;
+                var regImpl = e.Value[0].implementationType;
+
+                wirings.Add(
                     new ServiceRegistrationInfo(e.Key, 
                     e.Value[0].implementationType, 
                     e.Value[0].resourceServiceAttr != null ? e.Value[0].resourceServiceAttr.serviceResourceType: ServiceResourceType.NONE,
