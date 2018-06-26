@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using BeatThat.Pools;
 using BeatThat.SafeRefs;
-using BeatThat.TypeExt;
+using BeatThat.TypeExts;
 using UnityEngine;
 
 namespace BeatThat.Service
