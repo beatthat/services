@@ -281,7 +281,10 @@ namespace BeatThat.Service
 				using(var proxies = ListPool<Type>.Get()) {
 					foreach(var w in wirings) {
                         Register(w.implType, w.implType, w.resourceType, w.overrideResourcePath);
-						Register(w.interfaceType, w.implType, w.resourceType, w.overrideResourcePath);
+                        if(w.interfaceType != w.implType) {
+                            new ProxyServiceRegistration(w.interfaceType, w.implType).SetServiceRegistration(this);
+                        }
+
                         if(!AutowiredServiceRegistrations.GetProxyInterfaces(w.implType, w.interfaceType, proxies)) {
 							continue;
 						}
@@ -290,7 +293,7 @@ namespace BeatThat.Service
                             if(p == w.interfaceType) {
                                 continue; // no need to proxy the existing interface
                             }
-							new ProxyServiceRegistration(p, w.interfaceType).SetServiceRegistration(this);
+                            new ProxyServiceRegistration(p, w.implType).SetServiceRegistration(this);
 						}
 						proxies.Clear();
 					}
