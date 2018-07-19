@@ -1,7 +1,7 @@
 {
   "name": "services",
   "scope": "beatthat",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "enables you to inject or find global services",
   "main": "index.js",
   "repository": {
