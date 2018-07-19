@@ -10,13 +10,13 @@ namespace BeatThat.Service
 	{
 		public DirectServiceRegistration(object service, Type registrationInterface)
 		{
-			this.registrationInterface = registrationInterface;
+			this.registrationType = registrationInterface;
 			m_service = service;
 		}
 
 		public DirectServiceRegistration(object service) : this(service, service.GetType()) {}
 
-		protected Type registrationInterface { get; private set; }
+        public Type registrationType { get; private set; }
 
 		public int registrationGroup { get { return m_registrationGroup; } }
 
@@ -28,12 +28,12 @@ namespace BeatThat.Service
 
 		public void SetServiceRegistration(ServiceLoader loader)
 		{
-			loader.SetServiceRegistration(this, this.registrationInterface);
+			loader.SetServiceRegistration(this, this.registrationType);
 		}
 
 		public void RegisterService(Services toLocator)
 		{
-			toLocator.RegisterService(this, this.registrationInterface);
+			toLocator.RegisterService(this, this.registrationType);
 		}
 
 		virtual public void InitService(Services serviceLocator, Action onCompleteCallback)
@@ -43,7 +43,7 @@ namespace BeatThat.Service
 
 		public bool UnregisterService(Services toLocator)
 		{
-			return toLocator.UnregisterService(this.registrationInterface);
+			return toLocator.UnregisterService(this.registrationType);
 		}
 
 		public ServiceType GetService<ServiceType>(Services serviceLocator)
@@ -56,7 +56,9 @@ namespace BeatThat.Service
 		{
 			return m_service;
 		}
-			
+
+        public bool isProxy { get { return false; } }
+
 		private object m_service;
 		private int m_registrationGroup = 0;
 	}

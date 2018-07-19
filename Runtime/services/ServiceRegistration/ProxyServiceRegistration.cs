@@ -5,13 +5,18 @@ namespace BeatThat.Service
 {
     public class ProxyServiceRegistration : ServiceRegistration
 	{
-		public ProxyServiceRegistration(Type registrationInterface, Type concreteType)
+		public ProxyServiceRegistration(
+            Type registrationInterface,
+            Type concreteType,
+            int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT
+        )
 		{
-			this.registrationInterface = registrationInterface;
+			this.registrationType = registrationInterface;
 			this.proxyInterface = concreteType;
+            SetRegistrationGroup(registrationGroup);
 		}
 
-		protected Type registrationInterface { get; private set; }
+        public Type registrationType { get; private set; }
 		protected Type proxyInterface { get; private set; }
 
 		public int registrationGroup { get { return m_registrationGroup; } }
@@ -24,23 +29,23 @@ namespace BeatThat.Service
 			
 		public void SetServiceRegistration(ServiceLoader loader)
 		{
-			loader.SetServiceRegistration(this, this.registrationInterface);
+			loader.SetServiceRegistration(this, this.registrationType);
 		}
 			
 		public void RegisterService(Services toLocator)
 		{
-			toLocator.RegisterService(this, this.registrationInterface);
+			toLocator.RegisterService(this, this.registrationType);
 		}
 			
 		virtual public void InitService(Services serviceLocator, System.Action onCompleteCallback)
 		{
-			// generally do not auto init the prxied service, because the service itself will autoinit	
+			// generally do not auto init the proxied service, because the service itself will autoinit	
 			onCompleteCallback();
 		}
 		
 		public bool UnregisterService(Services toLocator)
 		{
-			return toLocator.UnregisterService(this.registrationInterface);
+			return toLocator.UnregisterService(this.registrationType);
 		}
 			
 		public ServiceType GetService<ServiceType>(Services serviceLocator)
@@ -53,6 +58,16 @@ namespace BeatThat.Service
 		{
 			return m_service?? (m_service = serviceLocator.GetService(this.proxyInterface));
 		}
+
+        public bool isProxy { get { return true; } }
+
+        override public string ToString()
+        {
+            return "[ProxyServiceRegistration type="
+                + this.registrationType.Name + ", proxies="
+                      + this.proxyInterface.Name + "]";
+        }
+
 		
 		private object m_service;
 		private int m_registrationGroup = 1;

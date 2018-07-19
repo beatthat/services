@@ -14,12 +14,13 @@ namespace BeatThat.Service
 
 			foreach(var e in m_wiringsByInterface) {
                 
-                wirings.Add(
-                    new ServiceRegistrationInfo(e.Key, 
+                wirings.Add(new ServiceRegistrationInfo(
+                    e.Key, 
                     e.Value[0].implementationType, 
+                    e.Value[0].registrationGroupAttr != null? e.Value[0].registrationGroupAttr.registrationGroup: Services.REGISTRATION_GROUP_DEFAULT,
                     e.Value[0].resourceServiceAttr != null ? e.Value[0].resourceServiceAttr.serviceResourceType: ServiceResourceType.NONE,
                     e.Value[0].resourceServiceAttr != null ? e.Value[0].resourceServiceAttr.overrideResourcePath : null
-                    ));
+                ));
 			}
 		}
 
@@ -115,6 +116,8 @@ namespace BeatThat.Service
 
                     var resourceAttr = t.GetCustomAttribute<ResourceServiceAttribute>();
 
+                    var regGroupAttr = t.GetCustomAttribute<RegistrationGroupAttribute>();
+
 					// if the RegisterService attribute specifies a service interface, register to that, 
 					// if not, register to the concrete service type
 					var registrationType = wiringAttr.serviceInterface?? t;
@@ -125,7 +128,7 @@ namespace BeatThat.Service
 						wiringsByInterface[registrationType] = wirings;
 					}
 
-					wirings.Add(new AttributesAndImplementationType(t, wiringAttr, resourceAttr));
+                    wirings.Add(new AttributesAndImplementationType(t, wiringAttr, resourceAttr, regGroupAttr));
 	
 				}
 			}
@@ -157,15 +160,17 @@ namespace BeatThat.Service
 
 		struct AttributesAndImplementationType
 		{
-			public AttributesAndImplementationType(Type implType, RegisterServiceAttribute regSrv, ResourceServiceAttribute rsrcSrv)
+            public AttributesAndImplementationType(Type implType, RegisterServiceAttribute regSrv, ResourceServiceAttribute rsrcSrv, RegistrationGroupAttribute regGroup)
 			{
 				this.implementationType = implType;
                 this.registerServiceAttr = regSrv;
                 this.resourceServiceAttr = rsrcSrv;
+                this.registrationGroupAttr = regGroup;
             }
 
 			public RegisterServiceAttribute registerServiceAttr;
             public ResourceServiceAttribute resourceServiceAttr;
+            public RegistrationGroupAttribute registrationGroupAttr;
 			public Type implementationType;
 		}
 

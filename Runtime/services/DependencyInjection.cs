@@ -10,7 +10,7 @@ namespace BeatThat.Service
 {
     public static class DependencyInjection 
 	{
-		public static void InjectDependencies(object instance)
+		public static bool InjectDependencies(object instance)
 		{
 			var instType = instance.GetType ();
 	
@@ -27,7 +27,7 @@ namespace BeatThat.Service
 
 					if (!(Services.exists && Services.Get.hasInit)) {
 						InjectOnServicesInit (instance);
-						return;
+                        return false;
 					}
 
                     if(eventHandler != null && !willInjectEventSent) {
@@ -38,7 +38,7 @@ namespace BeatThat.Service
 					var v = Services.Get.GetService (f.FieldType);
 					if (v == null) {
 						#if UNITY_EDITOR || DEBUG_UNSTRIP
-						Debug.LogWarning("[" + Time.frameCount + "] service not registered for type " + f.FieldType 
+						Debug.LogError("[" + Time.frameCount + "] service not registered for type " + f.FieldType 
 							+ " marked for injection by type " + instType);
 						#endif
 						continue;
@@ -56,7 +56,7 @@ namespace BeatThat.Service
 
 					if (!(Services.exists && Services.Get.hasInit)) {
 						InjectOnServicesInit (instance);
-						return;
+                        return false;
 					}
 
                     if (eventHandler != null && !willInjectEventSent)
@@ -68,7 +68,7 @@ namespace BeatThat.Service
 					var v = Services.Get.GetService (p.PropertyType);
 					if (v == null) {
 						#if UNITY_EDITOR || DEBUG_UNSTRIP
-						Debug.LogWarning("[" + Time.frameCount + "] service not registered for type " + p.PropertyType 
+                            Debug.LogError("[" + Time.frameCount + "] service not registered for type " + p.PropertyType 
 							+ " marked for injection by type " + instType);
 						#endif
 						continue;
@@ -82,6 +82,8 @@ namespace BeatThat.Service
             if(eventHandler != null) {
                 eventHandler.OnDidInjectDependencies();
             }
+
+            return true;
 		}
 
 		private static TypeInjections GetTypeInjectionFields(Type t)

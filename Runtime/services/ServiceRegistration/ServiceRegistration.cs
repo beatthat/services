@@ -1,4 +1,6 @@
 #pragma warning disable 618
+using System;
+
 namespace BeatThat.Service
 {
     public interface ServiceRegistration  
@@ -16,6 +18,10 @@ namespace BeatThat.Service
 		ServiceType GetService<ServiceType>(Services serviceLocator) where ServiceType : class;
 		
 		object GetService(Services serviceLocator);
+
+        bool isProxy { get; }
+
+        Type registrationType { get; }
 		
 	}
 }

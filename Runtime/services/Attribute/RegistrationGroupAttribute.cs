@@ -4,9 +4,9 @@ namespace BeatThat.Service
 {
 
     [AttributeUsage(AttributeTargets.All)]
-	public class ServiceRegistrationGroupAttribute : System.Attribute 
+	public class RegistrationGroupAttribute : System.Attribute 
 	{
-	  	public ServiceRegistrationGroupAttribute(int registrationGroup)  
+	  	public RegistrationGroupAttribute(int registrationGroup)  
 		{
 			this.registrationGroup = registrationGroup;
 		}

@@ -8,10 +8,16 @@ namespace BeatThat.Service
 	public struct ServiceRegistrationInfo  
 	{
 
-		public ServiceRegistrationInfo(Type intf, Type impl, ServiceResourceType resourceType = ServiceResourceType.NONE, string overrideResourcePath = null)
+        public ServiceRegistrationInfo(
+            Type intf, 
+            Type impl, 
+            int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT,
+            ServiceResourceType resourceType = ServiceResourceType.NONE, 
+            string overrideResourcePath = null)
 		{
 			this.interfaceType = intf;
 			this.implType = impl;
+            this.registrationGroup = registrationGroup;
             this.resourceType = resourceType;
             this.overrideResourcePath = overrideResourcePath;
 		}
@@ -25,6 +31,14 @@ namespace BeatThat.Service
         /// The interface type for a service. This will be the primary type used to retrieve the service, e.g. <code>Service.Require<SomeInterfaceType>()</InterfaceType></code>
         /// </summary>
 		public Type interfaceType { get; private set; }
+
+        /// <summary>
+        /// Registration groups provide a way to provide control over
+        /// the order in which registered services are instantiated and
+        /// receive their InitService message
+        /// (for services that implemenent AutoInitService).
+        /// </summary>
+        public int registrationGroup { get; private set; }
 
         /// <summary>
         /// Sometimes you want to have a service whose GameObject has multiple components and/or custom configuration.

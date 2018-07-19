@@ -9,13 +9,17 @@ namespace BeatThat.Service
     /// </summary>
     public class FactoryServiceRegistration : ServiceRegistration
 	{
-		public FactoryServiceRegistration(Type registrationInterface, Type concreteType)
+		public FactoryServiceRegistration(
+            Type registrationInterface, 
+            Type concreteType, 
+            int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT)
 		{
-			this.registrationInterface = registrationInterface;
+			this.registrationType = registrationInterface;
 			this.concreteType = concreteType;
+            SetRegistrationGroup(registrationGroup);
 		}
 
-		protected Type registrationInterface { get; private set; }
+        public Type registrationType { get; private set; }
 		protected Type concreteType { get; private set; }
 
 		public int registrationGroup { get { return m_registrationGroup; } }
@@ -28,12 +32,12 @@ namespace BeatThat.Service
 		
 		public void SetServiceRegistration(ServiceLoader loader)
 		{
-			loader.SetServiceRegistration(this, this.registrationInterface);
+			loader.SetServiceRegistration(this, this.registrationType);
 		}
 			
 		public void RegisterService(Services toLocator)
 		{
-			toLocator.RegisterService(this, this.registrationInterface);
+			toLocator.RegisterService(this, this.registrationType);
 		}
 		
 		virtual public void InitService(Services serviceLocator, System.Action onCompleteCallback)
@@ -43,7 +47,7 @@ namespace BeatThat.Service
 		
 		public bool UnregisterService(Services toLocator)
 		{
-			return toLocator.UnregisterService(this.registrationInterface);
+			return toLocator.UnregisterService(this.registrationType);
 		}
 		
 		public ServiceType GetService<ServiceType>(Services serviceLocator)
@@ -72,7 +76,7 @@ namespace BeatThat.Service
 			
 			if(typeof(Component).IsAssignableFrom(ctype))
 			{
-				GameObject go = new GameObject(this.registrationInterface.Name);
+				GameObject go = new GameObject(this.registrationType.Name);
 				return go.AddComponent(ctype);
 			}
 			else
@@ -88,6 +92,15 @@ namespace BeatThat.Service
 			return service;
 		}
 		
+        override public string ToString()
+        {
+            return "[FactoryServiceRegistation type=" 
+                + this.concreteType.Name + ", interface=" 
+                      + this.registrationType.Name + "]";
+        }
+
+        public bool isProxy { get { return false; } }
+
 		private object m_service;
 		private int m_registrationGroup = 0;
 

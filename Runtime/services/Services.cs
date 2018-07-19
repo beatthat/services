@@ -31,6 +31,14 @@ namespace BeatThat.Service
 	{
 		private static bool SELF_LOAD_ON_AWAKE = true;
 
+        /// <summary>
+        /// Registration groups provide a way to provide control over
+        /// the order in which registered services are instantiated and
+        /// receive their InitService message
+        /// (for services that implemenent AutoInitService).
+        /// </summary>
+        public const int REGISTRATION_GROUP_DEFAULT = 0;
+
 		public static void DisableSelfLoad()
 		{
 			SELF_LOAD_ON_AWAKE = false;

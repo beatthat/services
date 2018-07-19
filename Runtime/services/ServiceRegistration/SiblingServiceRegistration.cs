@@ -1,5 +1,6 @@
 #pragma warning disable 618
 
+using System;
 using UnityEngine;
 
 namespace BeatThat.Service
@@ -21,13 +22,18 @@ namespace BeatThat.Service
 		{
 			get {
 				foreach(object attr in GetType().GetCustomAttributes(true)) {
-					if(attr is ServiceRegistrationGroupAttribute) {
-						return (attr as ServiceRegistrationGroupAttribute).registrationGroup;
+					if(attr is RegistrationGroupAttribute) {
+						return (attr as RegistrationGroupAttribute).registrationGroup;
 					}
 				}
 				return m_registrationGroup;
 			}
 		}
+
+        public Type registrationType { get { return typeof(RegistrationInterface);  } }
+
+
+        public bool isProxy { get { return false; } }
 
 		private int m_registrationGroup = 0;
 

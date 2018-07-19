@@ -16,6 +16,8 @@ namespace BeatThat.Service
 		}
 		
 		public int registrationGroup { get; private set; }
+
+        public Type registrationType { get { return this.service.GetType(); } }
 		
 		public ServiceRegistration SetRegistrationGroup(int r)
 		{
@@ -63,6 +65,8 @@ namespace BeatThat.Service
 		{
 			return this.service;
 		}
+
+        public bool isProxy { get { return false; } }
 
 		protected Type registrationInterface { get; private set; }
 		protected Component service { get { return m_service.value; } private set { m_service = new SafeRef<Component>(value); } } 

@@ -82,7 +82,7 @@ namespace BeatThat.Service
 				Services.DisableSelfLoad();
 			}
 
-			var sl = UnityEngine.Object.FindObjectOfType<T>();
+			var sl = FindObjectOfType<T>();
 			if(sl == null) {
 				var asset = Resources.Load<T>(RESOURCE_PATH);
 				if(asset != null) {
@@ -182,13 +182,14 @@ namespace BeatThat.Service
 							services.array[i] = servicesT.GetChild(i);
 						}
 
-						Array.Sort(services.array, (x, y) => x.name.ToLower().CompareTo(y.name.ToLower()));
+                        Array.Sort(services.array, (x, y) => StringComparer.InvariantCultureIgnoreCase.Compare(x.name, y.name));
 
-						for(var i = 0; i < services.array.Length; i++) {
-							services.array[i].SetSiblingIndex(i);
-						}
-					}
-					#endif
+                        for (var i = 0; i < services.array.Length; i++)
+                        {
+                            services.array[i].SetSiblingIndex(i);
+                        }
+                    }
+#endif
 
                     Services.Get.InitComplete();
 
@@ -210,11 +211,18 @@ namespace BeatThat.Service
 			// separate configurations from registrations 
 			// to allow app-specific overrides to occur before any services are registered
 			SetServiceRegistrations();
-			RegisterServices();
-			InitializeServices(() => {
+
+            var serviceRegistrations = ArrayPool<ServiceRegistration>.GetCopy(m_serviceRegistrationsByType.Values);
+
+            Array.Sort(serviceRegistrations.array, new SortServiceRegistrationsByGroup());
+
+            RegisterServices(serviceRegistrations.array);
+            InitializeServices(serviceRegistrations.array, () => {
 				
 				DoStartServices();
-                
+
+                serviceRegistrations.Dispose();
+
 				if(onCompleteCallback != null) {
 					onCompleteCallback();
 				}
@@ -280,9 +288,9 @@ namespace BeatThat.Service
 
 				using(var proxies = ListPool<Type>.Get()) {
 					foreach(var w in wirings) {
-                        Register(w.implType, w.implType, w.resourceType, w.overrideResourcePath);
+                        Register(w.implType, w.implType, w.registrationGroup, w.resourceType, w.overrideResourcePath);
                         if(w.interfaceType != w.implType) {
-                            new ProxyServiceRegistration(w.interfaceType, w.implType).SetServiceRegistration(this);
+                            new ProxyServiceRegistration(w.interfaceType, w.implType, w.registrationGroup).SetServiceRegistration(this);
                         }
 
                         if(!AutowiredServiceRegistrations.GetProxyInterfaces(w.implType, w.interfaceType, proxies)) {
@@ -293,7 +301,7 @@ namespace BeatThat.Service
                             if(p == w.interfaceType) {
                                 continue; // no need to proxy the existing interface
                             }
-                            new ProxyServiceRegistration(p, w.implType).SetServiceRegistration(this);
+                            new ProxyServiceRegistration(p, w.implType, w.registrationGroup).SetServiceRegistration(this);
 						}
 						proxies.Clear();
 					}
@@ -353,23 +361,17 @@ namespace BeatThat.Service
 			}
 		}
 		
-		virtual protected void RegisterServices() 
+        virtual protected void RegisterServices(ServiceRegistration[] serviceRegistrations) 
 		{
-			var serviceRegistrations = new List<ServiceRegistration>(m_serviceRegistrationsByType.Values);
-			serviceRegistrations.Sort(new SortServiceRegistrationsByGroup());
-				
 			Services loc = this.services;
-				
 			foreach(ServiceRegistration r in serviceRegistrations) {
 				r.RegisterService(loc);
 			}
 		}
 		
-		virtual protected void InitializeServices(Action onCompleteCallback) 
+        virtual protected void InitializeServices(ServiceRegistration[] serviceRegistrations, Action onCompleteCallback) 
 		{
-			var serviceRegistrations = new List<ServiceRegistration>(m_serviceRegistrationsByType.Values);
-			serviceRegistrations.Sort(new SortServiceRegistrationsByGroup());
-			InitNext(serviceRegistrations, onCompleteCallback);
+			InitNext(serviceRegistrations, 0, onCompleteCallback);
 		}
 
 		/// <summary>
@@ -394,7 +396,7 @@ namespace BeatThat.Service
 			new DirectServiceRegistration<RegistrationInterface>(service).SetServiceRegistration(this);
 		}
 
-		public void Register(Type registrationInterface, Type concreteType, ServiceResourceType resourceType = ServiceResourceType.NONE, string overrideResourcePath = null)
+		public void Register(Type registrationInterface, Type concreteType, int registrationGroup, ServiceResourceType resourceType = ServiceResourceType.NONE, string overrideResourcePath = null)
 		{
 			if(!registrationInterface.IsAssignableFrom(concreteType)) {
 				throw new ArgumentException("Registration interface " + registrationInterface.Name
@@ -402,39 +404,46 @@ namespace BeatThat.Service
 			}
 
             var reg = resourceType != ServiceResourceType.NONE ? (ServiceRegistration)
-                new ResourceServiceRegistration(registrationInterface, concreteType, resourceType, overrideResourcePath) :
-                new FactoryServiceRegistration(registrationInterface, concreteType);
+                 new ResourceServiceRegistration(registrationInterface, concreteType, registrationGroup, resourceType, overrideResourcePath) :
+                new FactoryServiceRegistration(registrationInterface, concreteType, registrationGroup);
             
 
             reg.SetServiceRegistration(this);
 		}
 		
-		private void InitNext(List<ServiceRegistration> serviceRegistrations, Action onCompleteCallback)
+		private void InitNext(ServiceRegistration[] serviceRegistrations, int i, Action onCompleteCallback)
 		{
-			if(serviceRegistrations.Count == 0) {
-				if(DEBUG_LOAD_SERVICES) {
+            if(i >= serviceRegistrations.Length) {
+#if UNITY_EDITOR || DEBUG_UNSTRIP 
+                if(DEBUG_LOAD_SERVICES) {
 					Debug.Log("[" + Time.time + "] " + GetType() + " all services init...");
 				}
+#endif
 
-				onCompleteCallback();
+                onCompleteCallback();
+                return;
 			}
-			else {
-				ServiceRegistration r = serviceRegistrations[0];
-				
+
+#if UNITY_EDITOR || DEBUG_UNSTRIP
+			if(DEBUG_LOAD_SERVICES) {
+                Debug.Log("[" + Time.time + "] " + GetType() + " initing next service " + serviceRegistrations[i] + "...");
+			}
+#endif
+
+            var localIndex = i; // need a capturable var
+
+            serviceRegistrations[localIndex].InitService(this.services, () => {
+
+#if UNITY_EDITOR || DEBUG_UNSTRIP
 				if(DEBUG_LOAD_SERVICES) {
-					Debug.Log("[" + Time.time + "] " + GetType() + " initing next service " + r + "...");
+                    Debug.Log("[" + Time.time + "] " + GetType() + " service " 
+                              + serviceRegistrations[localIndex] + " init complete...");
 				}
-				
-				serviceRegistrations.RemoveAt(0);
+#endif
 
-				r.InitService(this.services, () => {
-					if(DEBUG_LOAD_SERVICES) {
-						Debug.Log("[" + Time.time + "] " + GetType() + " service " + r + " init complete...");
-					}
-					
-					InitNext(serviceRegistrations, onCompleteCallback);
-				});
-			}
+                InitNext(serviceRegistrations, localIndex + 1, onCompleteCallback);
+			});
+			
 		}
 		
 		/// <summary>
@@ -475,7 +484,20 @@ namespace BeatThat.Service
 	{
 		public int Compare (ServiceRegistration x, ServiceRegistration y)
 		{
-			return x.registrationGroup - y.registrationGroup;
+			var groupDiff = x.registrationGroup - y.registrationGroup;
+            if(groupDiff != 0) {
+                return groupDiff;
+            }
+
+            if(x.isProxy && !y.isProxy) {
+                return 1;
+            }
+
+            if(y.isProxy && !x.isProxy) {
+                return -1;
+            }
+
+            return StringComparer.InvariantCultureIgnoreCase.Compare(x.registrationType.Name, y.registrationType.Name);
 		}
 	}
 }

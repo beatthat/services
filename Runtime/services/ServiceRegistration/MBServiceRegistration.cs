@@ -1,4 +1,5 @@
 #pragma warning disable 618
+using System;
 using UnityEngine;
 namespace BeatThat.Service
 {
@@ -8,8 +9,8 @@ namespace BeatThat.Service
 		{
 			get {
 				foreach(object attr in GetType().GetCustomAttributes(true)) {
-		            if(attr is ServiceRegistrationGroupAttribute) {
-						return (attr as ServiceRegistrationGroupAttribute).registrationGroup;
+		            if(attr is RegistrationGroupAttribute) {
+						return (attr as RegistrationGroupAttribute).registrationGroup;
 					}
 		        }
 				return m_registrationGroup;
@@ -35,6 +36,10 @@ namespace BeatThat.Service
 		public abstract ServiceType GetService<ServiceType>(Services serviceLocator) where ServiceType : class;
 		
 		public abstract object GetService(Services serviceLocator);
+
+        public abstract Type registrationType { get; }
+
+        public bool isProxy { get { return false; } }
 
 	}
 }
