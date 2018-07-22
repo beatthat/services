@@ -1,4 +1,4 @@
-Enables you define and then locate global services via dependency injection or direct lookup.
+Enables you register and then locate global services.
 
 ## Install
 
@@ -17,7 +17,7 @@ In case it helps, a quick video of the above: https://youtu.be/Uss_yOiLNw8
 
 First, any service you want to use must be registered.
 
-#### Register Services to make them available for dependency injection and lookup.
+#### Register Services to make them available for and lookup.
 
 The simplest way to register a service is with the [RegisterService] attribute
 
@@ -36,46 +36,13 @@ public class UsesLookup
 }
 ```
 
-#### Use [Inject] for cleaner code and less tight coupling
-
-Dependency injection is a cleaner way to use services. It has a smaller code footprint and less direct dependencies on BeatThat.Services code. Down the road, if you wanted to switch to some other IoC container it would be easier to hack a patch to work with [Inject] tags than, say, Services.Require<SomeClass> calls.
-
-```c#
-using BeatThat.Services;
-[RegisterService]public class Foo{}
-
-public class UsesInjection_Manual
-{
-    [Inject]Foo myFoo; // will be set by injection
-
-    void Start()
-    {
-        // Something needs to call DependencyInjection.InjectDependencies.
-        // One option is to call it in Start...
-        DependencyInjection.InjectDependencies(this);
-    }
-}
-```
-
-...the above example still directly calls DependencyInjection.InjectDependencies. You can better contain that dependency by using a base class. One also comes provided
-
-```c#
-using BeatThat.Services;
-[RegisterService]public class Foo{}
-
-public class UsesInjection_WithBaseClass : DependencyInjectedBehaviour
-{
-    [Inject]Foo myFoo; // will be set by injection
-}
-```
-
 #### Use interfaces for less tight coupling and easier refactoring
 
 It's generally a good idea to use narrow interfaces for services to avoid tight coupling. More concretely, accessing services as interfaces makes it easier to swap the implementation, and, assuming the service interfaces are narrowly defined, also makes it much easier to understand at a glance what your service-dependent code really depends upon. This can be a big time saver when you're refactoring and using tools like 'Find References' to try to go through all the classes that depend on some service.
 
 The [RegisterService] attribute provides a couple of features to make it easier to use interfaces.
 
-###### Use injection freely on interfaces defined directly on the service class
+###### Interfaces defined directly on the service class are registered by default
 
 ```c#
 using BeatThat.Services;
@@ -83,9 +50,12 @@ public interface Bar {}
 
 [RegisterService]public class Foo : Bar {}
 
-public class UsesBar : DependencyInjectedBehaviour
+public class UsesBar
 {
-    [Inject]Bar myBar; // will be set by injection to Foo
+    void GetBar()
+    {
+      Bar bar = Services.Require<Bar>(); // returns instance of Foo
+    }
 }
 ````
 
@@ -104,9 +74,12 @@ public class FooBase : Bar {}
 )]
 public class Foo : FooBase {}
 
-public class UsesBar : DependencyInjectedBehaviour
+public class UsesBar
 {
-    [Inject]Bar myBar; // will be set by injection to Foo
+  void GetBar()
+  {
+    Bar bar = Services.Require<Bar>(); // returns instance of Foo
+  }
 }
 ````
 
@@ -125,15 +98,9 @@ public class Foo : FooBase {}
 
 public class UsesBar : DependencyInjectedBehaviour
 {
-    [Inject]Bar myBar; // will be set by injection to Foo
+  void GetBar()
+  {
+    Bar bar = Services.Require<Bar>(); // returns instance of Foo
+  }
 }
 ````
-
-## SAMPLES
-
-This package installs with a Samples that has a few basic examples
-that demonstrate how to use services, dependency injection etc.
-
-Each Sample also has a short video covering what's going on in the example.
-
-* Example_01_DependencyInjection: https://youtu.be/oaZdGZ98fdA
