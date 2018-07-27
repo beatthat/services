@@ -43,9 +43,7 @@ namespace BeatThat.Service
 			}
 
 			var attr = wirings[0].registerServiceAttr;
-			if(attr.proxyInterfaces != null && attr.proxyInterfaces.Length > 0) {
-                proxyInterfaces.AddRange(attr.proxyInterfaces);
-			}
+            attr.GetProxyInterfaces(serviceType, proxyInterfaces);
 
             switch (attr.interfaceRegistrationPolicy)
             {
@@ -55,8 +53,8 @@ namespace BeatThat.Service
                 case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeAndParents:
                     GetInterfaces(serviceType, true, proxyInterfaces);
                     break;
-                case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces:
-                    if (proxyInterfaces.Count == 0)
+                case InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfacesArgument:
+                    if (!attr.hasProxyInterfacesArgument)
                     {
                         GetInterfaces(serviceType, false, proxyInterfaces);
                     }

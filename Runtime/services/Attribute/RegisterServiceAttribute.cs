@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using BeatThat.CollectionsExt;
 
 namespace BeatThat.Service
 {
@@ -28,7 +30,7 @@ namespace BeatThat.Service
 		public RegisterServiceAttribute(
 			Type serviceInterface = null, 
             InterfaceRegistrationPolicy interfaceRegistrationPolicy 
-                = InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces,
+                = InterfaceRegistrationPolicy.RegisterInterfacesDeclaredOnTypeIfNoProxyInterfacesArgument,
 			Type[] proxyInterfaces = null, 
 			int priority = 0) 
 			: base(serviceInterface, priority) 
@@ -38,7 +40,21 @@ namespace BeatThat.Service
 
 		}
 
-        public Type[] proxyInterfaces { get; private set; }
+        virtual public bool hasProxyInterfacesArgument
+        {
+            get {
+                return this.proxyInterfaces != null;
+            }            
+        }
+
+        virtual public void GetProxyInterfaces(Type registeredType, ICollection<Type> result)
+        {
+            if(this.proxyInterfaces != null && this.proxyInterfaces.Length > 0) {
+                result.AddRange(this.proxyInterfaces);
+            }
+        }
+
+        private Type[] proxyInterfaces { get; set; }
         public InterfaceRegistrationPolicy interfaceRegistrationPolicy { get; private set; }
 	}
 
@@ -73,7 +89,7 @@ namespace BeatThat.Service
     /// </summary>
     public enum InterfaceRegistrationPolicy
     {
-        RegisterInterfacesDeclaredOnTypeIfNoProxyInterfaces = 0,
+        RegisterInterfacesDeclaredOnTypeIfNoProxyInterfacesArgument = 0,
         RegisterInterfacesDeclaredOnType = 1,
 		RegisterInterfacesDeclaredOnTypeAndParents = 2,
 		RegisterInterfacesSpecifiedAsProxy = 3
