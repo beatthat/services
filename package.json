@@ -41,7 +41,8 @@
       "test-overwrite2src": "copies changes from 'test' package back to src. Deletes src before the copy, so effectively whatever is in test becomes the src",
       "npm version [patch|minor|major]": "after everything commited, use npm version to push a tagged release with bumped version"
     },
-    "docs-generate": "node scripts/docs-generate.js"
+    "docs-generate": "node scripts/docs-generate.js",
+    "overwrite2clone": "./node_modules/.bin/overwrite2clone"
   },
   "dependencies": {
     "comments": "beatthat/comments#semver:^1.0.0",
