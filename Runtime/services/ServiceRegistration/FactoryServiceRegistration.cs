@@ -113,7 +113,8 @@ namespace BeatThat.Service
 	public class FactoryServiceRegistration<ConcreteType> : FactoryServiceRegistration
 		where ConcreteType : class, new() 
 	{
-		public FactoryServiceRegistration() : base(typeof(ConcreteType), typeof(ConcreteType)) {}
+        public FactoryServiceRegistration(int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT) 
+            : base(typeof(ConcreteType), typeof(ConcreteType), registrationGroup) {}
 	}
 
 
@@ -121,7 +122,8 @@ namespace BeatThat.Service
 		where ConcreteType : class, RegistrationInterface, new()
 		where RegistrationInterface : class
 	{
-		public FactoryServiceRegistration() : base(typeof(RegistrationInterface), typeof(ConcreteType)) {}
+		public FactoryServiceRegistration(int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT) 
+            : base(typeof(RegistrationInterface), typeof(ConcreteType), registrationGroup) {}
 	}
 
 }

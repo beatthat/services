@@ -374,6 +374,19 @@ namespace BeatThat.Service
 			InitNext(serviceRegistrations, 0, onCompleteCallback);
 		}
 
+        /// <summary>
+        /// Register a service that will be instantiated from a concrete type.
+        /// </summary>
+        /// <typeparam name="RegistrationInterface">the interface that will be used to locate this service with calls to BeatThat.Service.Services.Locate<RegistrationInterface>().</typeparam>
+        /// <typeparam name="ConcreteType">The concrete type of the service. Must implement the given registration interface. 
+        /// If this type is a MonoBehaviour, it will be created by unity's Object.Instantiate, otherwise if will be created by its zero-arg constructor
+        /// </typeparam>
+        public void Register<ConcreteType>(int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT)
+            where ConcreteType : class, new()
+        {
+            new FactoryServiceRegistration<ConcreteType>(registrationGroup).SetServiceRegistration(this);
+        }
+
 		/// <summary>
 		/// Register a service that will be instantiated from a concrete type.
 		/// </summary>
@@ -381,11 +394,11 @@ namespace BeatThat.Service
 		/// <typeparam name="ConcreteType">The concrete type of the service. Must implement the given registration interface. 
 		/// If this type is a MonoBehaviour, it will be created by unity's Object.Instantiate, otherwise if will be created by its zero-arg constructor
 		/// </typeparam>
-		public void Register<RegistrationInterface, ConcreteType>()
+        public void Register<RegistrationInterface, ConcreteType>(int registrationGroup = Services.REGISTRATION_GROUP_DEFAULT)
 			where ConcreteType : class, RegistrationInterface, new()
 				where RegistrationInterface : class
 		{
-			new FactoryServiceRegistration<RegistrationInterface, ConcreteType>().SetServiceRegistration(this);
+            new ProxyServiceRegistration(typeof(RegistrationInterface), typeof(ConcreteType), registrationGroup).SetServiceRegistration(this);
 		}
 
 		/// <summary>
