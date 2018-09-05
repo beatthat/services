@@ -1,3 +1,5 @@
+# <a href="readme"/>services
+
 Enables you register and then locate global services.
 
 ## Install
