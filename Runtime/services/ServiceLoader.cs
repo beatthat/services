@@ -375,6 +375,22 @@ namespace BeatThat.Service
 		}
 
         /// <summary>
+        /// TRUE if type is registered either a concrete type of an interface (proxy)
+        /// </summary>
+        public bool IsRegistered<T>()
+        {
+            return IsRegistered(typeof(T));
+        }
+
+        /// <summary>
+        /// TRUE if type is registered either a concrete type of an interface (proxy)
+        /// </summary>
+        public bool IsRegistered(Type type)
+        {
+            return m_serviceRegistrationsByType.ContainsKey(type);
+        }
+
+        /// <summary>
         /// Register a service that will be instantiated from a concrete type.
         /// </summary>
         /// <typeparam name="RegistrationInterface">the interface that will be used to locate this service with calls to BeatThat.Service.Services.Locate<RegistrationInterface>().</typeparam>
@@ -398,6 +414,9 @@ namespace BeatThat.Service
 			where ConcreteType : class, RegistrationInterface, new()
 				where RegistrationInterface : class
 		{
+            if(!IsRegistered<ConcreteType>()) {
+                Register<ConcreteType>(registrationGroup);
+            }
             new ProxyServiceRegistration(typeof(RegistrationInterface), typeof(ConcreteType), registrationGroup).SetServiceRegistration(this);
 		}
 
