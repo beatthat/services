@@ -122,6 +122,17 @@ namespace BeatThat.Service
         /// </summary>
         public bool hasInit { get; private set; }
 
+#if NET_4_6
+		public static System.Threading.Tasks.Task InitAsync()
+		{
+			var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+			Init(() => {
+				tcs.SetResult(null);
+			});
+            return tcs.Task;
+		}
+#endif
+
 		/// <summary>
 		/// Default init op. Handy especially for integration tests
 		/// </summary>
@@ -136,7 +147,6 @@ namespace BeatThat.Service
                 ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
                 return;
             }
-
             if (Services.Get.hasInit) {
                 if (callback != null)
                 {
@@ -144,16 +154,13 @@ namespace BeatThat.Service
                 }
                 return;
             }
-
             if(Services.Get.isInitInProgress) {
                 if(callback == null) {
                     return;
                 }
-
                 Services.InitStatusUpdated.AddListener(s => { callback(); });
                 return;
             }
-
             ServiceLoader.FindOrCreate<ServiceLoader>().LoadServices(true, callback);
 			
 		}

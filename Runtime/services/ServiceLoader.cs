@@ -166,6 +166,17 @@ namespace BeatThat.Service
 			m_serviceRegistrationsByType[registrationInterface] = serviceRegistration;
 		}
 		
+		#if NET_4_6
+		public System.Threading.Tasks.Task LoadServicesAsync(bool forceReload=true)
+		{
+			var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+			LoadServices(forceReload, () => {
+				tcs.SetResult(null);
+			});
+            return tcs.Task;
+		}
+		#endif
+
 		public void LoadServices(bool forceReload, Action onCompleteCallback = null)
 		{
 			if(!m_servicesLoaded || forceReload) {
