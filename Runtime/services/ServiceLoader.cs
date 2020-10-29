@@ -218,22 +218,15 @@ namespace BeatThat.Service
 		virtual protected void DoLoadServices(Action onCompleteCallback)
 		{
 			BeforeLoadServices();
-			
 			// separate configurations from registrations 
 			// to allow app-specific overrides to occur before any services are registered
 			SetServiceRegistrations();
-
             var serviceRegistrations = ArrayPool<ServiceRegistration>.GetCopy(m_serviceRegistrationsByType.Values);
-
             Array.Sort(serviceRegistrations.array, new SortServiceRegistrationsByGroup());
-
             RegisterServices(serviceRegistrations.array);
             InitializeServices(serviceRegistrations.array, () => {
-				
 				DoStartServices();
-
                 serviceRegistrations.Dispose();
-
 				if(onCompleteCallback != null) {
 					onCompleteCallback();
 				}
@@ -531,16 +524,13 @@ namespace BeatThat.Service
             if(groupDiff != 0) {
                 return groupDiff;
             }
-
             if(x.isProxy && !y.isProxy) {
                 return 1;
             }
-
             if(y.isProxy && !x.isProxy) {
                 return -1;
             }
-
-            return StringComparer.InvariantCultureIgnoreCase.Compare(x.registrationType.Name, y.registrationType.Name);
+            return StringComparer.InvariantCultureIgnoreCase.Compare(x.registrationType.FullName, y.registrationType.FullName);
 		}
 	}
 }
